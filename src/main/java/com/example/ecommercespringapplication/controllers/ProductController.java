@@ -20,7 +20,6 @@ import java.lang.*;
 @RequestMapping("/products")
 public class ProductController {
 
-
     private ProductService productService;
     @Autowired
     ProductController(ProductService productService)
@@ -32,7 +31,7 @@ public class ProductController {
     @GetMapping()
     public List<Product> getAllProducts()
     {
-        return new ArrayList<>();
+        return productService.getAllProduct();
     }
     @GetMapping("/{id}")
     public Product getSingleProduct(@PathVariable("id") Long id)

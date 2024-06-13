@@ -12,4 +12,5 @@ public interface ProductService {
     public Product getSingleProduct(Long id);
 
     public List<Product> getAllProduct();
+    Product replaceProduct(Long id,Product product);
 }

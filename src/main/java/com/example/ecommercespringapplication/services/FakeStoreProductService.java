@@ -1,6 +1,5 @@
 package com.example.ecommercespringapplication.services;
 
-import com.example.ecommercespringapplication.dtos.FakeStoreCategoriesDto;
 import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
 import com.example.ecommercespringapplication.models.Categories;
 import com.example.ecommercespringapplication.models.Category;
@@ -13,7 +12,6 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -51,11 +49,11 @@ public class FakeStoreProductService implements ProductService{
 //        product.setImage(productdto.getImage());
 //        return product;
 //    }
-    public Categories convertFakeStoreToCategories(FakeStoreCategoriesDto fakeStoreCategoriesDto)
+    public String convertFakeStoreToCategories(Categories fakeStoreCategoriesDto)
     {
         Categories categories=new Categories();
         categories.setName(fakeStoreCategoriesDto.getName());
-        return categories;
+        return categories.getName();
     }
     @Override
     public  Product getSingleProduct(Long id) {
@@ -89,15 +87,16 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public List<Categories> getAllCategories() {
+    public List<String> getAllCategories() {
         //FakeStoreCategoriesDto[] response=resttemplate.getForObject("https://fakestoreapi.com/products/categories", FakeStoreCategoriesDto[].class);
-        Categories[] response = resttemplate.getForObject("https://fakestoreapi.com/products/categories", Categories[].class);
+        String[] response = resttemplate.getForObject("https://fakestoreapi.com/products/categories", String[].class);
 
-        List<Categories> categoriesList = new ArrayList<>();
-        if (response != null) {
-            categoriesList = Arrays.asList(response);
+        List<String> answer= new ArrayList<>();
+        for(String string:response)
+        {
+            answer.add(string);
         }
-        return categoriesList;
+        return answer;
     }
 
     @Override

@@ -61,13 +61,15 @@ public class ProductController {
 
     }
     @GetMapping("/categories")
-    public List<Categories> getAllCategories()
+    public List<String> getAllCategories()
     {
-          return productService.getAllCategories();
+
+        return productService.getAllCategories();
     }
 
     @GetMapping("/category/{name}")
     public List<Product> getInCategory(@PathVariable String name) {
         return productService.getInCategory(name);
     }
+
 }

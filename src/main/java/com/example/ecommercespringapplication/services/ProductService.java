@@ -16,7 +16,7 @@ public interface ProductService {
     public List<Product> getAllProduct();
     Product replaceProduct(Long id,Product product);
 
-    List<Categories> getAllCategories();
+    List<String> getAllCategories();
 
     List<Product> getInCategory(String name);
 }

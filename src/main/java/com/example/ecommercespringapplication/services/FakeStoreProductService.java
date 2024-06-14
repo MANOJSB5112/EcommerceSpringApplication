@@ -16,12 +16,12 @@ import java.util.List;
 
 @Service
 public class FakeStoreProductService implements ProductService{
-    RestTemplate resttemplate;
+    RestTemplate restTemplate;
 
     @Autowired
     FakeStoreProductService(RestTemplate restTemplate)
     {
-        this.resttemplate=restTemplate;
+        this.restTemplate=restTemplate;
     }
 
     public Product convertFakeStoreToProducts(FakeStoreProductDto productdto)
@@ -57,7 +57,7 @@ public class FakeStoreProductService implements ProductService{
     }
     @Override
     public  Product getSingleProduct(Long id) {
-        FakeStoreProductDto productDto = resttemplate.getForObject(
+        FakeStoreProductDto productDto = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/" + id,
                 FakeStoreProductDto.class);
         assert productDto != null;
@@ -66,7 +66,7 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public List<Product> getAllProduct() {
-        FakeStoreProductDto[] response = resttemplate.getForObject(
+        FakeStoreProductDto[] response = restTemplate.getForObject(
                 "https://fakestoreapi.com/products", FakeStoreProductDto[].class
         );
         List<Product> answer = new ArrayList<>();
@@ -79,17 +79,17 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public Product replaceProduct(Long id,Product product) {
         //FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        RequestCallback requestCallback = resttemplate.httpEntityCallback(new FakeStoreProductDto(), FakeStoreProductDto.class);
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(new FakeStoreProductDto(), FakeStoreProductDto.class);
         HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor =
-                new HttpMessageConverterExtractor<>(FakeStoreProductDto.class, resttemplate.getMessageConverters());
-        FakeStoreProductDto response = resttemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.PUT, requestCallback, responseExtractor);
+                new HttpMessageConverterExtractor<>(FakeStoreProductDto.class, restTemplate.getMessageConverters());
+        FakeStoreProductDto response = restTemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.PUT, requestCallback, responseExtractor);
         return convertFakeStoreToProducts(response);
     }
 
     @Override
     public List<String> getAllCategories() {
         //FakeStoreCategoriesDto[] response=resttemplate.getForObject("https://fakestoreapi.com/products/categories", FakeStoreCategoriesDto[].class);
-        String[] response = resttemplate.getForObject("https://fakestoreapi.com/products/categories", String[].class);
+        String[] response = restTemplate.getForObject("https://fakestoreapi.com/products/categories", String[].class);
 
         List<String> answer= new ArrayList<>();
         for(String string:response)
@@ -102,7 +102,7 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public List<Product> getInCategory(String name) {
         String url = "https://fakestoreapi.com/products/category/" + name;
-        FakeStoreProductDto[] response = resttemplate.getForObject(url, FakeStoreProductDto[].class);
+        FakeStoreProductDto[] response = restTemplate.getForObject(url, FakeStoreProductDto[].class);
         List<Product> answer =new ArrayList<>();
         //assert response != null;
         for(FakeStoreProductDto fakeStoreProductDto:response)
@@ -111,6 +111,11 @@ public class FakeStoreProductService implements ProductService{
         }
         return answer;
     }
-
+ public Product deleteProduct(Long id)
+ {
+     String url="'https://fakestoreapi.com/products/6"+id;
+     FakeStoreProductDto reponce=restTemplate.getForObject(url,FakeStoreProductDto.class);
+     return convertFakeStoreToProducts(reponce);
+ }
 
 }

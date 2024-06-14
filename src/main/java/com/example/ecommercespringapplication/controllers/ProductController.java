@@ -55,10 +55,12 @@ public class ProductController {
     {
         return productService.replaceProduct(id,product);
     }
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id)
-    {
 
+    //As, we are using third party api,the product is not going to delete but it sends back that product
+    @DeleteMapping("/{id}")
+    public Product deleteProduct(@PathVariable("id") Long id)
+    {
+        return productService.deleteProduct(id);
     }
     @GetMapping("/categories")
     public List<String> getAllCategories()

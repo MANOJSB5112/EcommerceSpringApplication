@@ -19,4 +19,6 @@ public interface ProductService {
     List<String> getAllCategories();
 
     List<Product> getInCategory(String name);
+
+    Product deleteProduct(Long id);
 }

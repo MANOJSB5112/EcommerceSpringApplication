@@ -1,16 +1,16 @@
 package com.example.ecommercespringapplication.controllers;
 
 
-import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
+import com.example.ecommercespringapplication.models.Categories;
 import com.example.ecommercespringapplication.models.Product;
-import com.example.ecommercespringapplication.services.FakeStoreProductService;
 import com.example.ecommercespringapplication.services.ProductService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.lang.*;
 
@@ -29,9 +29,10 @@ public class ProductController {
 
 
     @GetMapping()
-    public List<Product> getAllProducts()
+    public ResponseEntity<List<Product>> getAllProducts()
     {
-        return productService.getAllProduct();
+        ResponseEntity<List<Product>> response=new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
+        return response;
     }
     @GetMapping("/{id}")
     public Product getSingleProduct(@PathVariable("id") Long id)
@@ -58,5 +59,15 @@ public class ProductController {
     public void deleteProduct(@PathVariable("id") Long id)
     {
 
+    }
+    @GetMapping("/categories")
+    public List<Categories> getAllCategories()
+    {
+          return productService.getAllCategories();
+    }
+
+    @GetMapping("/category/{name}")
+    public List<Product> getInCategory(@PathVariable String name) {
+        return productService.getInCategory(name);
     }
 }

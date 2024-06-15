@@ -1,11 +1,13 @@
 package com.example.ecommercespringapplication.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Category {
-    Long id;
-    String name;
+@Entity
+public class Category extends BaseModel{
+    private String name;
 }

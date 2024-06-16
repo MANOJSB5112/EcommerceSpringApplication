@@ -118,7 +118,7 @@ public class FakeStoreProductService implements ProductService{
  }
 
     @Override
-    public void saveProduct(Product product) {
+    public void addNewProduct(Product product) {
 
     }
 

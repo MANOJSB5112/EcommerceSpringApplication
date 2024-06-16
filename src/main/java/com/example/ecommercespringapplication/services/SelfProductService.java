@@ -38,7 +38,8 @@ public class SelfProductService implements ProductService{
 
     @Override
     public List<Product> getAllProduct() {
-        return null;
+        List<Product> allProducts=productServiceRepo.findAll();
+        return allProducts;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SelfProductService implements ProductService{
     }
 
     @Override
-    public void saveProduct(Product product) {
+    public void addNewProduct(Product product) {
        Product newProduct=new Product();
        newProduct.setTitle(product.getTitle());
        newProduct.setDescription(product.getDescription());

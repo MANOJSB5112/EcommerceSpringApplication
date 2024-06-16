@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @RestController
@@ -31,10 +33,16 @@ public class SelfProductController {
     {
         return selfProductService.getSingleProduct(id);
     }
-    @PostMapping()
-    public void saveProduct(@RequestBody Product product)
+
+    @GetMapping()
+    public List<Product> getAllProduct()
     {
-         selfProductService.saveProduct(product);
+        return selfProductService.getAllProduct();
+    }
+    @PostMapping()
+    public void addNewProduct(@RequestBody Product product)
+    {
+         selfProductService.addNewProduct(product);
     }
     @PatchMapping("/{id}")
     public void updateProduct(@PathVariable Long id,@RequestBody Product product)

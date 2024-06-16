@@ -19,7 +19,7 @@ public interface ProductService {
 
     Product deleteProduct(Long id);
 
-    void saveProduct(Product product);
+    void addNewProduct(Product product);
     void updateProduct(Long id,Product product);
 
 }

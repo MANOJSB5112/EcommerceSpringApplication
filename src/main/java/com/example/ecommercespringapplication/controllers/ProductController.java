@@ -1,7 +1,6 @@
 package com.example.ecommercespringapplication.controllers;
 
 
-import com.example.ecommercespringapplication.models.Categories;
 import com.example.ecommercespringapplication.models.Product;
 import com.example.ecommercespringapplication.services.ProductService;
 import lombok.Getter;

@@ -1,7 +1,6 @@
 package com.example.ecommercespringapplication.services;
 
 import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
-import com.example.ecommercespringapplication.models.Categories;
 import com.example.ecommercespringapplication.models.Category;
 import com.example.ecommercespringapplication.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +48,12 @@ public class FakeStoreProductService implements ProductService{
 //        product.setImage(productdto.getImage());
 //        return product;
 //    }
-    public String convertFakeStoreToCategories(Categories fakeStoreCategoriesDto)
-    {
-        Categories categories=new Categories();
-        categories.setName(fakeStoreCategoriesDto.getName());
-        return categories.getName();
-    }
+//    public String convertFakeStoreToCategories(Categories fakeStoreCategoriesDto)
+//    {
+//        Categories categories=new Categories();
+//        categories.setName(fakeStoreCategoriesDto.getName());
+//        return categories.getName();
+//    }
     @Override
     public  Product getSingleProduct(Long id) {
         FakeStoreProductDto productDto = restTemplate.getForObject(
@@ -117,5 +116,15 @@ public class FakeStoreProductService implements ProductService{
      FakeStoreProductDto reponce=restTemplate.getForObject(url,FakeStoreProductDto.class);
      return convertFakeStoreToProducts(reponce);
  }
+
+    @Override
+    public void saveProduct(Product product) {
+
+    }
+
+    @Override
+    public void updateProduct(Long id, Product product) {
+
+    }
 
 }

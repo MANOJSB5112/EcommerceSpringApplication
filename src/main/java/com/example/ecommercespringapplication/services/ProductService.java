@@ -1,8 +1,5 @@
 package com.example.ecommercespringapplication.services;
 
-import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
-import com.example.ecommercespringapplication.models.Categories;
-import com.example.ecommercespringapplication.models.Category;
 import com.example.ecommercespringapplication.models.Product;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +18,8 @@ public interface ProductService {
     List<Product> getInCategory(String name);
 
     Product deleteProduct(Long id);
+
+    void saveProduct(Product product);
+    void updateProduct(Long id,Product product);
+
 }

@@ -68,7 +68,12 @@ public class SelfProductService implements ProductService{
 
     @Override
     public void saveProduct(Product product) {
-        productServiceRepo.save(product);
+       Product newProduct=new Product();
+       newProduct.setTitle(product.getTitle());
+       newProduct.setDescription(product.getDescription());
+       newProduct.setImage(product.getImage());
+       newProduct.setPrice(product.getPrice());
+       productServiceRepo.save(newProduct);
     }
 
     @Override

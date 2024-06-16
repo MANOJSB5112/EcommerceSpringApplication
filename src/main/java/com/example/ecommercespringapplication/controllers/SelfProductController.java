@@ -31,8 +31,8 @@ public class SelfProductController {
     {
         return selfProductService.getSingleProduct(id);
     }
-    @PostMapping("/save")
-    public void saveProduct(Product product)
+    @PostMapping()
+    public void saveProduct(@RequestBody Product product)
     {
          selfProductService.saveProduct(product);
     }

@@ -4,6 +4,7 @@ import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
 import com.example.ecommercespringapplication.models.Category;
 import com.example.ecommercespringapplication.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
@@ -13,7 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeProductService")
+@Qualifier
 public class FakeStoreProductService implements ProductService{
     RestTemplate restTemplate;
 

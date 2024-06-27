@@ -17,19 +17,19 @@ import java.lang.*;
 @Getter
 @Setter
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/storeproducts")
 public class ProductController {
 
     private ProductService productService;
     @Autowired
-    ProductController(@Qualifier("selfProductService") ProductService productService)
+    ProductController( @Qualifier("fakeProductService")     ProductService productService)
     {
         this.productService=productService;
     }
 
 
     @GetMapping()
-    public ResponseEntity<List<Product>> getAllProducts()
+    public ResponseEntity<List<Product>> getAllProducts(@RequestHeader("Authentication") String token)
     {
         ResponseEntity<List<Product>> response=new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
         return response;

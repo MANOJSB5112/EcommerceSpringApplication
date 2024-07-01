@@ -37,21 +37,18 @@ public class SelfProductController {
     @GetMapping("/{id}")
     public ResponseEntity<Product> getSingleProduct(@PathVariable Long id)
     {
-//        if(authenticationCommons.validateToken(token)==null)
-//        {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
+
         Product product = selfProductService.getSingleProduct(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Product>> getAllProduct(@RequestHeader("Authentication") String token)
+    public ResponseEntity<List<Product>> getAllProduct()
     {
-        if(authenticationCommons.validateToken(token)==null)
-        {
-           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        if(authenticationCommons.validateToken(token)==null)
+//        {
+//           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
         List<Product> products = selfProductService.getAllProduct();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }

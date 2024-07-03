@@ -13,14 +13,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-public class SelfProductControllerTest {
-
-    @MockBean
-    private SelfProductService selfProductService;
-
-    @Autowired
-    private SelfProductController selfProductController;
+//@SpringBootTest
+//public class SelfProductControllerTest {
+//
+//    @MockBean
+//    private SelfProductService selfProductService;
+//
+//    @Autowired
+//    private SelfProductController selfProductController;
 
 //    @Test
 //    public void testSingleProduct() {
@@ -39,4 +39,4 @@ public class SelfProductControllerTest {
 //
 //        assertEquals(p1, response);
 //    }
-}
+//}

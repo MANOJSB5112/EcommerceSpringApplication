@@ -3,8 +3,12 @@ package com.example.ecommercespringapplication.services;
 import com.example.ecommercespringapplication.dtos.FakeStoreProductDto;
 import com.example.ecommercespringapplication.models.Category;
 import com.example.ecommercespringapplication.models.Product;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
@@ -16,52 +20,67 @@ import java.util.List;
 
 @Service("fakeProductService")
 @Qualifier
-public class FakeStoreProductService implements ProductService{
-    RestTemplate restTemplate;
+public class FakeStoreProductService implements ProductService {
+    private final RestTemplate restTemplate;
+    private final RedisTemplate<String, String> template;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    FakeStoreProductService(RestTemplate restTemplate)
-    {
-        this.restTemplate=restTemplate;
+    FakeStoreProductService(RestTemplate restTemplate, RedisTemplate<String, String> template) {
+        this.restTemplate = restTemplate;
+        this.template = template;
+        this.objectMapper = new ObjectMapper();
     }
 
-    public Product convertFakeStoreToProducts(FakeStoreProductDto productdto)
-    {
-        Product product=new Product();
-        product.setId(productdto.getId());
-        product.setPrice(productdto.getPrice());
-        product.setTitle(productdto.getTitle());
-        product.setCategory(new Category());
-        product.getCategory().setName(productdto.getCategory());
-        product.getCategory().setId(productdto.getId());
-        product.setDescription(productdto.getImage());
-        product.setImage(productdto.getImage());
+    private static final String STRING_KEY_PREFIX = "redi2read:strings:";
+
+    public Product convertFakeStoreToProducts(FakeStoreProductDto productDto) {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setPrice(productDto.getPrice());
+        product.setTitle(productDto.getTitle());
+        Category category = new Category();
+        category.setName(productDto.getCategory());
+        category.setId(productDto.getId());
+        product.setCategory(category);
+        product.setDescription(productDto.getDescription());
+        product.setImage(productDto.getImage());
         return product;
     }
-//    public Product convertFakeStoreToCategory(FakeStoreProductDto productdto)
-//    {
-//        Product product=new Product();
-//        product.setId(productdto.getId());
-//        product.setPrice(productdto.getPrice());
-//        product.setTitle(productdto.getTitle());
-//        product.setCategory(new Category());
-//        product.getCategory().setName(productdto.getCategory());
-//        product.setDescription(productdto.getImage());
-//        product.setImage(productdto.getImage());
-//        return product;
-//    }
-//    public String convertFakeStoreToCategories(Categories fakeStoreCategoriesDto)
-//    {
-//        Categories categories=new Categories();
-//        categories.setName(fakeStoreCategoriesDto.getName());
-//        return categories.getName();
-//    }
+
     @Override
-    public  Product getSingleProduct(Long id) {
-        FakeStoreProductDto productDto = restTemplate.getForObject(
-                "https://fakestoreapi.com/products/" + id,
-                FakeStoreProductDto.class);
-        assert productDto != null;
+    public Product getSingleProduct(Long id) {
+        String redisKey = STRING_KEY_PREFIX + id;
+        FakeStoreProductDto productDto = null;
+
+        // Try to fetch the product from Redis
+        String productJson = template.opsForValue().get(redisKey);
+        if (productJson != null) {
+            try {
+                productDto = objectMapper.readValue(productJson, FakeStoreProductDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // If the product is not found in Redis, fetch it from the REST API
+        if (productDto == null) {
+            productDto = restTemplate.getForObject(
+                    "https://fakestoreapi.com/products/" + id,
+                    FakeStoreProductDto.class
+            );
+            assert productDto != null;  // Ensure that the product was successfully fetched from the API
+
+            // Save the fetched product to Redis
+            try {
+                productJson = objectMapper.writeValueAsString(productDto);
+                template.opsForValue().set(redisKey, productJson);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Convert and return the product
         return convertFakeStoreToProducts(productDto);
     }
 
